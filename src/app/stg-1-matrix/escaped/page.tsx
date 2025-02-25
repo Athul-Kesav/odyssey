@@ -9,6 +9,19 @@ const Escaped = () => {
   const router = useRouter();
 
   useEffect(() => {
+    const handleBeforeUnload = (event: { preventDefault: () => void; returnValue: string; }) => {
+      event.preventDefault();
+      event.returnValue = ""; // Chrome requires returnValue to show a warning
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
+  useEffect(() => {
     const timeout = setTimeout(() => {
       router.push("/stg-2-interstellar")
     }, 7000)

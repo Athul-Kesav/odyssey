@@ -15,7 +15,6 @@ import TextReveal from "@/components/TextReveal";
 //import musicFile from "../../../../public/audios/music-stg1.mp3";
 
 function Escape() {
-
   //const audio = new Audio(musicFile);
   //audio.loop = true;
   //audio.play();
@@ -30,9 +29,25 @@ function Escape() {
   const [binarySequence, setBinarySequence] = useState(Array(9).fill(""));
 
   useEffect(() => {
+    const handleBeforeUnload = (event: {
+      preventDefault: () => void;
+      returnValue: string;
+    }) => {
+      event.preventDefault();
+      event.returnValue = ""; // Chrome requires returnValue to show a warning
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
+  useEffect(() => {
     const timeout = setTimeout(() => {
       setIsTimeUp(true);
-    }, 10*60*1000);
+    }, 10 * 60 * 1000);
 
     return () => {
       clearTimeout(timeout);
@@ -99,8 +114,6 @@ function Escape() {
   const gridInput = (index: any, e: any) => {
     const value = e.target.value;
 
-
-
     const newSequence = [...binarySequence];
 
     if (value === "0" || value === "1" || value === "") {
@@ -134,7 +147,7 @@ function Escape() {
         </AnimatePresence>
 
         <div className="flex relative flex-col mask h-screen w-2/3 z-30 justify-center items-center">
-          <TextReveal/>
+          <TextReveal />
         </div>
 
         <div className="flex flex-col h-screen w-1/3 pr-10">
@@ -179,8 +192,8 @@ function Escape() {
         </div>
       </div>
       <div className="absolute p-7 top-0 left-0 font-extralight origin-center font-montserrat text-4xl flex justify-center items-center">
-      It's all dark in here <br/>
-      move around to look for the escape.
+        It's all dark in here <br />
+        move around to look for the escape.
       </div>
     </>
   );

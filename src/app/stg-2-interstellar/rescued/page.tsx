@@ -9,8 +9,23 @@ export default function Page() {
   const [videoOpacity, setVideoOpacity] = useState(1);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-
   const router = useRouter();
+
+  useEffect(() => {
+    const handleBeforeUnload = (event: {
+      preventDefault: () => void;
+      returnValue: string;
+    }) => {
+      event.preventDefault();
+      event.returnValue = ""; // Chrome requires returnValue to show a warning
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
 
   useEffect(() => {
     const timer1 = setTimeout(() => {
@@ -27,14 +42,14 @@ export default function Page() {
     };
   }, []);
 
-useEffect(() => {
+  useEffect(() => {
     if (videoEnded) {
-        const timer = setTimeout(() => {
-            router.push("/stg-3-imitationGame/");
-        }, 5000);
-        return () => clearTimeout(timer);
+      const timer = setTimeout(() => {
+        router.push("/stg-3-imitationGame/");
+      }, 5000);
+      return () => clearTimeout(timer);
     }
-}, [videoEnded, router]);
+  }, [videoEnded, router]);
 
   const handleVideoEnd = () => {
     setVideoEnded(true);

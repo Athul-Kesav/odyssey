@@ -1,6 +1,6 @@
 "use client";
 import ClickButton from "@/components/ClickButton";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 import Stg2game from "@/components/Stg2game";
@@ -8,6 +8,22 @@ import OxyMeter from "@/components/OxyMeter";
 
 export default function Rescue() {
   const [msgRead, setMsgRead] = useState(false);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event: {
+      preventDefault: () => void;
+      returnValue: string;
+    }) => {
+      event.preventDefault();
+      event.returnValue = ""; // Chrome requires returnValue to show a warning
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
 
   return (
     <motion.div
@@ -65,20 +81,6 @@ export default function Rescue() {
             shadowColor="white"
             goTo={() => {
               setMsgRead(true);
-            }}
-          />
-        </div>
-      )}
-
-      {msgRead && (
-        <div className="absolute w-screen h-screen z-0">
-          <video
-            src="/videos/alarms.mp4"
-            className="opacity-0"
-            loop
-            autoPlay
-            ref={(video) => {
-              if (video) video.volume = 0.003;
             }}
           />
         </div>

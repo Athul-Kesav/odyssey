@@ -4,7 +4,7 @@ import ClickButton from "@/components/ClickButton";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Page() {
   const router = useRouter();
@@ -12,6 +12,20 @@ export default function Page() {
   const [inputValue, setInputValue] = useState("");
   const [showWrongAlert, setShowWrongAlert] = useState(false)
 
+  useEffect(() => {
+    const handleBeforeUnload = (event: { preventDefault: () => void; returnValue: string; }) => {
+      event.preventDefault();
+      event.returnValue = ""; // Chrome requires returnValue to show a warning
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
+  
   function decipher() {
     setDecipherClicked(true);
   }
@@ -31,7 +45,7 @@ export default function Page() {
       return;
     } else {
       if (inputValue.toUpperCase() === "FRANKFURTISNOTTHEBASE"){
-        router.push("/stg-4-tenet/frankfurt"); 
+        router.push("/stg-4-tenet/"); 
       } else{
         setShowWrongAlert(true);
       }
@@ -50,7 +64,7 @@ export default function Page() {
       <div className="w-screen h-screen flex justify-end items-center gap-5 p-5">
         {!decipherClicked && (
           <motion.div
-            className=" left-5 absolute w-3/5 h-[90vh] justify-center  flex flex-col p-4 border border-gray-700 bg-black rounded-xl shadow-lg text-gray-500 text-md leading-relaxed font-montserrat backdrop-blur-md bg-opacity-30"
+            className=" left-5 absolute w-3/5 h-[90vh] justify-center  flex flex-col p-4 border border-gray-700 bg-black rounded-xl shadow-lg text-gray-500 text-base leading-relaxed font-montserrat backdrop-blur-md bg-opacity-30"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
