@@ -9,6 +9,8 @@ import { useState } from "react";
 export default function Page() {
   const router = useRouter();
   const [decipherClicked, setDecipherClicked] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+  const [showWrongAlert, setShowWrongAlert] = useState(false)
 
   function decipher() {
     setDecipherClicked(true);
@@ -20,6 +22,20 @@ export default function Page() {
 
   function stuttgart() {
     router.push("/stg-4-tenet/stuttgart");
+  }
+
+  function checkInput() {
+    // Add your input validation logic here
+    if (inputValue.trim() === "") {
+      setShowWrongAlert(true);
+      return;
+    } else {
+      if (inputValue.toUpperCase() === "FRANKFURTISNOTTHEBASE"){
+        router.push("/stg-4-tenet/frankfurt"); 
+      } else{
+        setShowWrongAlert(true);
+      }
+    }
   }
 
   return (
@@ -114,7 +130,7 @@ export default function Page() {
             width={500}
             height={500}
             alt="stg3-1"
-            className="pointer-events-none"
+            className="pointer-events-none z-0"
           />
           {!decipherClicked ? (
             <ClickButton
@@ -125,28 +141,61 @@ export default function Page() {
               goTo={decipher}
             />
           ) : (
-            <div className="flex gap-5">
-              <ClickButton
-                text="Frankfurt"
-                buttonColor="#DD0000"
-                textColor="white"
-                shadowColor="white"
-                goTo={frankfurt}
+            <div className="w-full flex flex-col items-center">
+              <input
+              type="text"
+              placeholder="deciphered message here"
+              className="p-3 font-neueMachina text-xl rounded-md bg-opacity-5  bg-white w-full flex border border-white text-white uppercase placeholder:lowercase placeholder:font-thin placeholder:font-neueMachina placeholder:text-gray-400"
+              onChange={(e) => setInputValue(e.target.value)}
               />
+              <p className="mb-14 text-left w-full text-lg">no spaces or special characters</p>
               <ClickButton
-                text="Stuttgart"
-                buttonColor="#FFCC00"
-                textColor="black"
-                shadowColor="white"
-                goTo={stuttgart}
+              text="Submit"
+              buttonColor="#94FFA9"
+              textColor="black"
+              shadowColor="white"
+              goTo={checkInput}
               />
             </div>
           )}
         </motion.div>
 
+        {showWrongAlert && (
+        <motion.div
+          className="fixed inset-0 flex items-center justify-center bg-black/70 backdrop-blur-sm"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          <motion.div
+            className="bg-[#FF222230] px-6 py-4 text-center w-full z-50 absolute"
+            initial={{ y: 50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+          >
+            <h2 className="text-[#FF2222] text-lg font-neueMachina tracking-wider font-bold">
+              WRONG INPUT
+            </h2>
+            <p className="text-[#FF2222] text-lg mt-2 font-montserrat font-medium">
+              That's the wrong answer. Try again.
+              <br />
+              Remember, the answer is in the message.
+            </p>
+
+            <button
+              onClick={() => {
+                setShowWrongAlert(false);
+              }}
+              className="mt-4 px-4 py-2 border font-montserrat font-semibold border-[#FF2222] text-[#FF2222] hover:bg-[#FF2222] hover:text-black transition-all rounded-md"
+            >
+              TRY AGAIN
+            </button>
+          </motion.div>
+        </motion.div>
+      )}
+
         {decipherClicked && (
           <motion.div
-            className="right-5 absolute w-3/5 h-[90vh] p-4 border border-gray-700 bg-black rounded-xl overflow-hidden shadow-lg text-gray-500 text-md leading-relaxed font-montserrat backdrop-blur-md bg-opacity-30"
+            className="right-5 absolute w-3/5 h-[90vh] -z-10  p-4 border border-gray-700 bg-black rounded-xl overflow-hidden shadow-lg text-gray-500 text-md leading-relaxed font-montserrat backdrop-blur-md bg-opacity-30"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
@@ -157,7 +206,7 @@ export default function Page() {
               layout="fill"
               objectFit="cover"
               alt="stg3-1"
-              className="pointer-events-none"
+              className="pointer-events-none "
             />
           </motion.div>
         )}

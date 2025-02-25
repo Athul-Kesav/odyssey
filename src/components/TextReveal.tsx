@@ -44,7 +44,7 @@ export default function Home() {
           <br />
           <br />
           <span className="text-5xl font-neueMachina">
-            261, ___, 282, ___, 337, 392, 481
+            261, 269, 282, ___, 337, 392, 481
           </span>
           <br />
           <br />

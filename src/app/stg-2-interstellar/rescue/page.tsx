@@ -1,6 +1,5 @@
 "use client";
 import ClickButton from "@/components/ClickButton";
-import Image from "next/image";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 
@@ -132,7 +131,7 @@ export default function Rescue() {
           <div className="w-1/2 relative">
             <Stg2game />
             <div className="w-full text-black font-5xl font-neueMachina absolute bottom-0 p-5 m-5">
-              <OxyMeter start={75} duration={150} />
+              <OxyMeter start={85} duration={90} />
             </div>
           </div>
         </motion.div>

@@ -8,16 +8,16 @@ import Image from "next/image";
 import cross from "../../public/cross.svg";
 import bspace from "../../public/arrow-left-to-line.svg";
 
-const TARGET_NUMBER = "101215"; //162584
+const TARGET_NUMBER = "10121815";
 
 const Game = () => {
 
     const router = useRouter();
     const [input, setInput] = useState("");
-    const [feedback, setFeedback] = useState(Array(6).fill(""));
+    const [feedback, setFeedback] = useState(Array(8).fill(""));
 
     const handleInput = (num: any) => {
-        if (input.length < 6) {
+        if (input.length < 8) {
             setInput((prev) => prev + num);
         }
     };
@@ -28,18 +28,18 @@ const Game = () => {
 
     const handleClear = () => {
         setInput("");
-        setFeedback(Array(6).fill(""));
+        setFeedback(Array(8).fill(""));
     };
 
     const checkGuess = () => {
-        if (input.length < 6) return;
+        if (input.length < 8) return;
 
-        let newFeedback = Array(6).fill("");
+        let newFeedback = Array(8).fill("");
         let targetCount = Array(10).fill(0);
         let inputCount = Array(10).fill(0);
 
         // First pass: check for correct positions (green)
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < 8; i++) {
             if (input[i] === TARGET_NUMBER[i]) {
                 newFeedback[i] = "green";
             } else {
@@ -49,7 +49,7 @@ const Game = () => {
         }
 
         // Second pass: check for correct numbers in wrong positions (yellow)
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < 8; i++) {
             if (newFeedback[i] !== "green") {
                 if (targetCount[parseInt(input[i])] > 0) {
                     newFeedback[i] = "yellow";
@@ -67,7 +67,7 @@ const Game = () => {
         } else {
             setTimeout(() => {
                 setInput(""); // Clear input after feedback is shown
-                setFeedback(Array(6).fill(""));
+                setFeedback(Array(8).fill(""));
             }, 2500);
         }
     };
@@ -91,7 +91,7 @@ const Game = () => {
             exit={{ opacity: 0 }}
         >
             <div className="flex gap-2 mb-6">
-                {[...Array(6)].map((_, i) => (
+                {[...Array(8)].map((_, i) => (
                     <div
                         key={i}
                         className={`w-16 h-16 flex items-center justify-center text-xl border-2 rounded-lg transition-all text-black font-neueMachina ${
