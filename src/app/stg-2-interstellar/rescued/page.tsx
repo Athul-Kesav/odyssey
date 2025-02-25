@@ -12,22 +12,6 @@ export default function Page() {
   const router = useRouter();
 
   useEffect(() => {
-    const handleBeforeUnload = (event: {
-      preventDefault: () => void;
-      returnValue: string;
-    }) => {
-      event.preventDefault();
-      event.returnValue = ""; // Chrome requires returnValue to show a warning
-    };
-
-    window.addEventListener("beforeunload", handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, []);
-
-  useEffect(() => {
     const timer1 = setTimeout(() => {
       setShowMessage(true);
     }, 24000);

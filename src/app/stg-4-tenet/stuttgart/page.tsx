@@ -49,7 +49,7 @@ export default function Page() {
             and save her from the clutches of the Creator. As he turns to get
             water, he sees a note on the table. It reads,<br/><br/>
             <span className="font-medium text-white font-neueMachina">
-              "Follow the instructions. Find the sequence. Save her."
+              &ldquo;Follow the instructions. Find the sequence. Save her.&rdquo;
             </span>
           </p>
           <p className="text-lg text-white">

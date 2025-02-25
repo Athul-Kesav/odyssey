@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 
 export default function FullParentCanvas() {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -10,7 +10,7 @@ export default function FullParentCanvas() {
     useEffect(() => {
         if (!containerRef.current) return;
 
-        // Observe the parent container's size
+        // Resize Observer to track parent container size
         const resizeObserver = new ResizeObserver((entries) => {
             const { width, height } = entries[0].contentRect;
             setDimensions({ width, height });
@@ -20,21 +20,29 @@ export default function FullParentCanvas() {
         return () => resizeObserver.disconnect();
     }, []);
 
-    // Initialize or re-initialize the canvas whenever dimensions change
     useEffect(() => {
-        if (!canvasRef.current) return;
+        if (!canvasRef.current || dimensions.width === 0 || dimensions.height === 0) return;
         const ctx = canvasRef.current.getContext('2d');
         if (!ctx) return;
 
-        // Fill canvas with black
+        // Fill canvas with black on size change
         ctx.fillStyle = 'black';
         ctx.fillRect(0, 0, dimensions.width, dimensions.height);
 
-        // Set erasing mode
+        // Set erase mode
         ctx.globalCompositeOperation = 'destination-out';
     }, [dimensions]);
 
-    const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const drawCircle = useCallback((x: number, y: number, radius: number) => {
+        const ctx = canvasRef.current?.getContext('2d');
+        if (!ctx) return;
+
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, 2 * Math.PI);
+        ctx.fill();
+    }, []);
+
+    const handleMouseMove = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
         if (!canvasRef.current) return;
 
         const rect = canvasRef.current.getBoundingClientRect();
@@ -42,7 +50,6 @@ export default function FullParentCanvas() {
         const clientY = e.clientY - rect.top;
         const { movementX, movementY } = e;
 
-        // Number of circles to draw based on mouse movement distance
         const nbOfCircles = Math.max(Math.abs(movementX), Math.abs(movementY)) / 10;
 
         if (prevPosition.current) {
@@ -55,25 +62,11 @@ export default function FullParentCanvas() {
             }
         }
 
-        // Update the previous position
         prevPosition.current = { x: clientX, y: clientY };
-    };
-
-    const drawCircle = (x: number, y: number, radius: number) => {
-        const ctx = canvasRef.current?.getContext('2d');
-        if (!ctx) return;
-
-        ctx.beginPath();
-        ctx.arc(x, y, radius, 0, 2 * Math.PI);
-        ctx.fill();
-    };
+    }, [drawCircle]);
 
     return (
-        <div
-            ref={containerRef}
-            className='w-full h-full relative'
-        >
-            {/* Canvas covering the entire parent */}
+        <div ref={containerRef} className="w-full h-full relative">
             <canvas
                 ref={canvasRef}
                 onMouseMove={handleMouseMove}

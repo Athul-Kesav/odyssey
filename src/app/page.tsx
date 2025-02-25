@@ -46,9 +46,10 @@ export default function Home() {
             <p className="text-black  pointer-events-none text-2xl font-extralight font-montserrat">
               You are <span className="font-normal">Adam</span>, a man trapped in a shifting digital prison — a Mind
               Trap — named <span className="font-medium">Veritas Nexus</span>, a labyrinth of illusions designed to fracture reality itself.
-              Created by the <span className="font-medium">"Der Schöpfer"</span> (german for — The
+              Created by the <span className="font-medium">&ldquo;Der Schöpfer&rdquo;</span> (german for — The
               Creator), this ever-evolving nightmare blurs the line between
-              truth and deception.
+              truth and deception. 
+
               <br/> <br/>
               Each stage is a test, each puzzle a battle,
               and every failure a step deeper into the void. But you are not
@@ -62,7 +63,7 @@ export default function Home() {
               humanoid AI designed as part of the project —<span className="font-medium">Altéré</span> for your protection.
               <br/><br/>
               But is she truly an ally,
-              or just another cog in The Creator's machine? Together, you must <span className="font-normal">
+              or just another cog in The Creator&apos;s machine? Together, you must <span className="font-normal">
               hack the system, outsmart the illusions, and manipulate the very
               code of your reality</span> to break free.
               <br/><br/>

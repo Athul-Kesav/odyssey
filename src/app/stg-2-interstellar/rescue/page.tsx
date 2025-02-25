@@ -1,29 +1,12 @@
 "use client";
 import ClickButton from "@/components/ClickButton";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
-
 import Stg2game from "@/components/Stg2game";
 import OxyMeter from "@/components/OxyMeter";
 
 export default function Rescue() {
   const [msgRead, setMsgRead] = useState(false);
-
-  useEffect(() => {
-    const handleBeforeUnload = (event: {
-      preventDefault: () => void;
-      returnValue: string;
-    }) => {
-      event.preventDefault();
-      event.returnValue = ""; // Chrome requires returnValue to show a warning
-    };
-
-    window.addEventListener("beforeunload", handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, []);
 
   return (
     <motion.div
@@ -36,9 +19,7 @@ export default function Rescue() {
       {/* Background Video */}
       <video
         src="/videos/rescue1.mp4"
-        className={`absolute inset-0 w-full h-full object-cover opacity-50 ${
-          msgRead ? "hidden" : ""
-        }`}
+        className={`absolute inset-0 w-full h-full object-cover opacity-50 ${msgRead ? "hidden" : ""}`}
         autoPlay
         loop
         muted
@@ -52,10 +33,9 @@ export default function Rescue() {
         >
           <h1 className="text-4xl font-bold text-left my-6">Rescue Mission</h1>
           <p className="text-lg font-thin leading-relaxed text-white">
-            Adam's mission is critical.
+            Adam&apos;s mission is critical.
             <br />
-            He must save his friend{" "}
-            <span className="font-bold text-yellow-400">ECHO</span> before the
+            He must save his friend <span className="font-bold text-yellow-400">ECHO</span> before the
             oxygen runs out. The space station is on a collision course, and
             only Adam can redirect it to Earth. But to do so, he must hack into
             the system using a secret 6-digit pin to find a possible landing

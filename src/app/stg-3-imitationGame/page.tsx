@@ -4,24 +4,8 @@ import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-export default function interstella() {
+export default function Interstella() {
   const router = useRouter();
-
-  useEffect(() => {
-    const handleBeforeUnload = (event: {
-      preventDefault: () => void;
-      returnValue: string;
-    }) => {
-      event.preventDefault();
-      event.returnValue = ""; // Chrome requires returnValue to show a warning
-    };
-
-    window.addEventListener("beforeunload", handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, []);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -30,7 +14,7 @@ export default function interstella() {
     return () => {
       clearTimeout(timeout);
     };
-  });
+  }, [router]);
 
   return (
     <>

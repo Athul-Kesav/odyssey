@@ -1,11 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-  AnimatePresence,
-} from "framer-motion";
+import { motion, useMotionValue, AnimatePresence } from "framer-motion";
 import ClickButton from "@/components/ClickButton";
 import { useRouter } from "next/navigation";
 import BConvert from "@/components/BConvert";
@@ -111,7 +106,7 @@ function Escape() {
     }
   }
 
-  const gridInput = (index: any, e: any) => {
+  const gridInput = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
     const newSequence = [...binarySequence];
@@ -192,7 +187,7 @@ function Escape() {
         </div>
       </div>
       <div className="absolute p-7 top-0 left-0 font-extralight origin-center font-montserrat text-4xl flex justify-center items-center">
-        It's all dark in here <br />
+        It&apos;s all dark in here <br />
         move around to look for the escape.
       </div>
     </>

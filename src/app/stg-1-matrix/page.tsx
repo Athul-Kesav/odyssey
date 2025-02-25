@@ -4,7 +4,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-function matrix() {
+function Matrix() {
   const matrixVid = "/videos/matrixVid.mp4";
   const ref = React.useRef(null);
   const isInView = useInView(ref, { once: true });
@@ -63,4 +63,4 @@ function matrix() {
   );
 }
 
-export default matrix;
+export default Matrix;

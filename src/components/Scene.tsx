@@ -1,65 +1,69 @@
 'use client'
-import React, { useEffect, useRef, useState } from 'react'
-import useWindow from './useWindow'
+import React, { useEffect, useRef, useCallback } from 'react';
+import useWindow from './useWindow';
 
 export default function Scene() {
     const { dimension } = useWindow();
-    const canvas = useRef<HTMLCanvasElement | null>(null);
-    const prevPosition = useRef<{ x: number; y: number } | null>(null)
-    const [radius, setRadius] = useState(15); // Add state for radius
+    const canvasRef = useRef<HTMLCanvasElement | null>(null);
+    const prevPosition = useRef<{ x: number; y: number } | null>(null);
+    const radius = 15;
 
     useEffect(() => {
-        dimension.width > 0 && init();
-    }, [dimension])
+        if (dimension.width > 0) initializeCanvas();
+    }, []);
 
-    const init = () => {
-        if (canvas.current) {
-            const ctx = canvas.current.getContext("2d");
-            if (ctx) {
-                ctx.fillStyle = "black";
-                ctx.fillRect(0, 0, dimension.width, dimension.height); 
-                ctx.globalCompositeOperation = "destination-out";
-            }
-        }
-    }
+    const initializeCanvas = useCallback(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
 
-    const lerp = (x: number, y: number, a: number) => x * (1 - a) + y * a;
+        // Fill canvas with black
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, dimension.width, dimension.height);
+        ctx.globalCompositeOperation = "destination-out";
+    }, [dimension.height, dimension.width]);
 
-    const manageMouseMove = (e: { clientX: any; clientY: any; movementX: any; movementY: any; }) => {
+    const lerp = (start: number, end: number, t: number) => start * (1 - t) + end * t;
+
+    const draw = useCallback((x: number, y: number, radius: number) => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, 2 * Math.PI);
+        ctx.fill();
+    }, []);
+
+    const handleMouseMove = useCallback((e: React.MouseEvent<HTMLCanvasElement>) => {
         const { clientX, clientY, movementX, movementY } = e;
-
         const nbOfCircles = Math.max(Math.abs(movementX), Math.abs(movementY)) / 10;
 
-        if(prevPosition.current != null){
+        if (prevPosition.current) {
             const { x, y } = prevPosition.current;
-            for(let i = 0 ; i < nbOfCircles ; i++){
-                const targetX = lerp(x, clientX, (1 / nbOfCircles) * i);
-                const targetY = lerp(y, clientY, (1 / nbOfCircles) * i);
-                draw(targetX, targetY, radius) // Use the state variable for radius
+            for (let i = 0; i < nbOfCircles; i++) {
+                const targetX = lerp(x, clientX, i / nbOfCircles);
+                const targetY = lerp(y, clientY, i / nbOfCircles);
+                draw(targetX, targetY, radius);
             }
         }
 
-        prevPosition.current = {
-            x: clientX,
-            y: clientY
-        }
-    }
+        prevPosition.current = { x: clientX, y: clientY };
+    }, [draw]);
 
-    const draw = (x: number, y: number, radius: number) => {
-        if (canvas.current) {
-            const ctx = canvas.current.getContext("2d");
-            if (ctx) {
-                ctx.beginPath();
-                ctx.arc(x, y, radius, 0, 2 * Math.PI);
-                ctx.fill();
-            }
-        }
-    }
+    
 
     return (
-        <div className='relative w-full h-full'>
-            {dimension.width == 0 && <div className='absolute w-full h-full bg-black'/>}
-            <canvas ref={canvas} onMouseMove={manageMouseMove} height={dimension.height} width={dimension.width}/>
+        <div className="relative w-full h-full">
+            {dimension.width === 0 && <div className="absolute w-full h-full bg-black" />}
+            <canvas
+                ref={canvasRef}
+                onMouseMove={handleMouseMove}
+                height={dimension.height}
+                width={dimension.width}
+            />
         </div>
-    )
+    );
 }

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-export default function interstella() {
+export default function Interstella() {
   const router = useRouter();
 
   useEffect(() => {

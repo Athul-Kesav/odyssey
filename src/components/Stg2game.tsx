@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import React, { useState } from "react";
-import { useRouter } from "next/navigation"
+import React, { useState, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import ClickButton from "./ClickButton";
 import Image from "next/image";
 import cross from "../../public/cross.svg";
@@ -11,15 +11,12 @@ import bspace from "../../public/arrow-left-to-line.svg";
 const TARGET_NUMBER = "10121815";
 
 const Game = () => {
-
     const router = useRouter();
     const [input, setInput] = useState("");
-    const [feedback, setFeedback] = useState(Array(8).fill(""));
+    const [feedback, setFeedback] = useState<string[]>(Array(8).fill(""));
 
-    const handleInput = (num: any) => {
-        if (input.length < 8) {
-            setInput((prev) => prev + num);
-        }
+    const handleInput = (num: string) => {
+        setInput((prev) => (prev.length < 8 ? prev + num : prev));
     };
 
     const handleBackspace = () => {
@@ -34,53 +31,55 @@ const Game = () => {
     const checkGuess = () => {
         if (input.length < 8) return;
 
-        let newFeedback = Array(8).fill("");
-        let targetCount = Array(10).fill(0);
-        let inputCount = Array(10).fill(0);
+        const newFeedback = Array(8).fill("");
+        const targetCount: Record<string, number> = {};
+        const inputCount: Record<string, number> = {};
 
-        // First pass: check for correct positions (green)
+        // Count occurrences of each digit in the target number
+        for (const char of TARGET_NUMBER) {
+            targetCount[char] = (targetCount[char] || 0) + 1;
+        }
+
+        // First pass: check correct positions (green)
         for (let i = 0; i < 8; i++) {
             if (input[i] === TARGET_NUMBER[i]) {
                 newFeedback[i] = "green";
+                targetCount[input[i]]--;
             } else {
-                targetCount[parseInt(TARGET_NUMBER[i])]++; // Count digits in target number
-                inputCount[parseInt(input[i])]++; // Count digits in input
+                inputCount[input[i]] = (inputCount[input[i]] || 0) + 1;
             }
         }
 
-        // Second pass: check for correct numbers in wrong positions (yellow)
+        // Second pass: check misplaced digits (yellow)
         for (let i = 0; i < 8; i++) {
-            if (newFeedback[i] !== "green") {
-                if (targetCount[parseInt(input[i])] > 0) {
-                    newFeedback[i] = "yellow";
-                    targetCount[parseInt(input[i])]--;
-                } else {
-                    newFeedback[i] = "red";
-                }
+            if (newFeedback[i] !== "green" && targetCount[input[i]] > 0) {
+                newFeedback[i] = "yellow";
+                targetCount[input[i]]--;
+            } else if (newFeedback[i] !== "green") {
+                newFeedback[i] = "red";
             }
         }
 
         setFeedback(newFeedback);
 
-        if (newFeedback.every((feedback) => feedback === "green")) {
+        if (newFeedback.every((color) => color === "green")) {
             router.push("/stg-2-interstellar/rescued");
         } else {
             setTimeout(() => {
-                setInput(""); // Clear input after feedback is shown
+                setInput("");
                 setFeedback(Array(8).fill(""));
             }, 2500);
         }
     };
 
-    const shuffleArray = (array: any[]) => {
-        for (let i = array.length - 1; i > 0; i--) {
+    const numpad = useMemo(() => {
+        const numbers = [...Array(10).keys()];
+        for (let i = numbers.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
+            [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
         }
-        return array;
-    };
-
-    const numpad = shuffleArray([...Array(10).keys()]);
+        return numbers;
+    }, []);
 
     return (
         <motion.div
@@ -90,17 +89,18 @@ const Game = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
         >
+            {/* Input Display */}
             <div className="flex gap-2 mb-6">
                 {[...Array(8)].map((_, i) => (
                     <div
                         key={i}
                         className={`w-16 h-16 flex items-center justify-center text-xl border-2 rounded-lg transition-all text-black font-neueMachina ${
                             feedback[i] === "green"
-                                ? "bg-green-500 text-black border-green-700"
+                                ? "bg-green-500 border-green-700"
                                 : feedback[i] === "yellow"
-                                ? "bg-yellow-400 text-black border-yellow-600"
+                                ? "bg-yellow-400 border-yellow-600"
                                 : feedback[i] === "red"
-                                ? "bg-red-500 text-black border-red-700"
+                                ? "bg-red-500 border-red-700"
                                 : "bg-[#AAAAAA30] border-[#AAAAAA] text-white"
                         }`}
                     >
@@ -109,41 +109,43 @@ const Game = () => {
                 ))}
             </div>
 
+            {/* Number Pad */}
             <div className="grid grid-cols-3 gap-3">
                 {numpad.map((num) => (
                     <button
                         key={num}
                         onClick={() => handleInput(num.toString())}
-                        className="flex items-center justify-center w-[8.3rem] h-16 max-h-32 max-w-40 top-[-3rem] right-0 border border-[#060112] text-white font-medium rounded-md cursor-pointer hover:shadow-[3px_3px_0px_#AAAAAA] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:border-[#AAAAAA] transition-all duration-150 font-neueMachina active:shadow-[0px_0px_0px_white] active:translate-x-0 active:translate-y-0"
+                        className="flex items-center justify-center w-[8.3rem] h-16 max-h-32 max-w-40 border border-[#060112] text-white font-medium rounded-md cursor-pointer hover:shadow-[3px_3px_0px_#AAAAAA] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:border-[#AAAAAA] transition-all duration-150 font-neueMachina active:shadow-[0px_0px_0px_white] active:translate-x-0 active:translate-y-0"
                     >
                         {num}
                     </button>
                 ))}
-                <div
-                    className="flex items-center justify-center w-[8.3rem] h-16 max-h-32 max-w-40 top-[-3rem] right-0 bg-[#FF2222] rounded-md cursor-pointer hover:shadow-[3px_3px_0px_white] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all duration-75 active:shadow-[0px_0px_0px_white] active:translate-x-0 active:translate-y-0"
-                    onClick={() => {
-                        handleBackspace();
-                    }}
-                >
-                    <Image src={bspace} alt="cross" width={30} height={30} />
-                </div>
 
-                <div
-                    className="flex items-center justify-center w-[8.3rem] h-16 max-h-32 max-w-40 top-[-3rem] right-0 bg-[#FF2222] rounded-md cursor-pointer hover:shadow-[3px_3px_0px_white] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all duration-75 active:shadow-[0px_0px_0px_white] active:translate-x-0 active:translate-y-0"
-                    onClick={() => {
-                        handleClear();
-                    }}
+                {/* Backspace Button */}
+                <button
+                    onClick={handleBackspace}
+                    className="flex items-center justify-center w-[8.3rem] h-16 bg-[#FF2222] rounded-md cursor-pointer hover:shadow-[3px_3px_0px_white] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all duration-75 active:shadow-[0px_0px_0px_white] active:translate-x-0 active:translate-y-0"
                 >
-                    <Image src={cross} alt="cross" width={20} height={20} />
-                </div>
+                    <Image src={bspace} alt="backspace" width={30} height={30} />
+                </button>
+
+                {/* Clear Button */}
+                <button
+                    onClick={handleClear}
+                    className="flex items-center justify-center w-[8.3rem] h-16 bg-[#FF2222] rounded-md cursor-pointer hover:shadow-[3px_3px_0px_white] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all duration-75 active:shadow-[0px_0px_0px_white] active:translate-x-0 active:translate-y-0"
+                >
+                    <Image src={cross} alt="clear" width={20} height={20} />
+                </button>
             </div>
+
+            {/* Submit Button */}
             <div className="m-6">
                 <ClickButton
                     text="open"
                     buttonColor="#94FFA9"
                     textColor="black"
                     shadowColor="white"
-                    goTo={() => checkGuess()}
+                    goTo={checkGuess}
                 />
             </div>
         </motion.div>
