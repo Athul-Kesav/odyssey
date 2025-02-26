@@ -8,10 +8,6 @@ export default function Scene() {
     const prevPosition = useRef<{ x: number; y: number } | null>(null);
     const radius = 15;
 
-    useEffect(() => {
-        if (dimension.width > 0) initializeCanvas();
-    }, []);
-
     const initializeCanvas = useCallback(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
@@ -23,6 +19,12 @@ export default function Scene() {
         ctx.fillRect(0, 0, dimension.width, dimension.height);
         ctx.globalCompositeOperation = "destination-out";
     }, [dimension.height, dimension.width]);
+
+    useEffect(() => {
+        if (dimension.width > 0) initializeCanvas();
+    }, [dimension.width, initializeCanvas]);
+
+    
 
     const lerp = (start: number, end: number, t: number) => start * (1 - t) + end * t;
 

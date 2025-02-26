@@ -32,7 +32,7 @@ const Escaped = () => {
   })
 
   return (
-    <div className='flex flex-col justify-center items-center h-screen w-screen '>
+    <div className='overflow-hidden flex flex-col justify-center items-center h-screen w-screen '>
       {videoEnded? (
         <motion.div
           className='text-lg font-spaceMono text-gray-500'

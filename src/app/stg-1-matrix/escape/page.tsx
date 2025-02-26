@@ -119,7 +119,7 @@ function Escape() {
 
   return (
     <>
-      <div className="flex h-screen w-screen justify-center items-start">
+      <div className=" overflow-hidden flex h-screen w-screen justify-center items-start">
         <AnimatePresence>
           {bcVisible && (
             <motion.div

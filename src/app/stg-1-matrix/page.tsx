@@ -36,7 +36,7 @@ function Matrix() {
   });
 
   return (
-    <div className="h-screen w-screen flex flex-col items-center justify-center bg-black">
+    <div className=" overflow-hidden h-screen w-screen flex flex-col items-center justify-center bg-black">
       <span className="absolute font-neueMachina text-white z-40 flex flex-col items-center justify-center">
         <motion.h2
           ref={ref}
