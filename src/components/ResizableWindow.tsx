@@ -149,7 +149,7 @@ const ResizableWindow: React.FC<ResizableWindowProps> = ({
   return (
     <div
       ref={windowRef}
-      className="bg-black border-2 border-green-500 rounded-lg shadow-xl flex flex-col absolute"
+      className="bg-black border-2 overflow-hidden scrollbar-hide border-green-500 rounded-lg shadow-xl flex flex-col absolute"
       style={{
         width: dimensions.width,
         height: dimensions.height,
@@ -159,7 +159,7 @@ const ResizableWindow: React.FC<ResizableWindowProps> = ({
     >
       {/* Title Bar with dragging */}
       <div
-        className="bg-gray-800 text-green-500 font-spaceMono font-thin px-4 py-2 rounded-t-lg flex justify-between items-center cursor-move"
+        className="bg-gray-800 z-10 text-green-500 font-spaceMono font-thin px-4 py-2 rounded-t-lg flex justify-between items-center cursor-move"
         onMouseDown={handleDragStart}
       >
         <span className="font-mono">{title}</span>
@@ -176,7 +176,7 @@ const ResizableWindow: React.FC<ResizableWindowProps> = ({
         </div>
       </div>
       {/* Content Area */}
-      <div className="flex-grow p-4 text-green-500 font-spaceMono overflow-auto">{children}</div>
+      <div className="flex-grow p-4 text-green-500 font-spaceMono overflow-auto scrollbar-hide">{children}</div>
 
       {/* Resize Handles */}
       <div

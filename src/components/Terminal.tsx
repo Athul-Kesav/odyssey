@@ -29,98 +29,187 @@ export const fileSystem = {
     config: generateFolder([
       {
         name: "settings.json",
-        content: `{
-    "albis": true,
-    "notifications": true,
-    "autoUpdate": false,
-    "backupFrequency": "weekly"
-  }`,
+        content: `<div className="font-laBelle font-thin text-white">
+        {
+  "system_nAme": "mAtrix control unit",
+  "system_mode": "Active",
+  "Ai_core": {
+    "leArning_rAte": 0.007,
+    "AdAptive_protocol": "neurAl simulAtion",
+    "control_fActor": "nexus",
+    "override_enAbled": true
+  },
+  "mAtrix_control": {
+    "surveillAnce": true,
+    "mind_control": true,
+    "populAtion_monitoring": "Active"
+  },
+  "network_status": "online",
+  "security": {
+    "encryption": "Aes-256",
+    "firewall": "Advanced",
+    "Access_level": "Admin"
+  },
+  "logging": {
+    "level": "debug",
+    "sAve_intervAl": 15
+  },
+  "bAckup": {
+    "enAbled": true,
+    "frequency": "dAily"
+  }
+}
+
+  </div>`,
         type: "text",
       },
       {
-        name: "app.config",
-        content: `[Application]
-  name=Matrix Terminal
-  version=4.2.1
-  log_level=debug
-  auto_sync=true`,
+        name: "system.config",
+        content: `<div className="text-white"># ai supercoMputer Matrix control configuration
+
+[general]
+systeMid = delta-oMega
+version = 4.5.9
+Mode = hyper-vision
+startupdelay = 3
+
+[ai]
+coreactive = true
+learningrate = 0.006
+adaptationMode = quantuM
+overridecoMand = synapse
+
+[Matrix]
+controlstatus = engaged
+surveillance = oMni
+Mindinfluence = absolute
+populationMonitor = real-tiMe
+
+[security]
+encryptionprotocol = aes-512
+firewallstatus = reinforced
+accesslevel = supreMe
+
+[logging]
+logMode = verbose
+recordinterval = 5
+
+[backup]
+autobackup = enabled
+backupfrequency = weekly
+storageliMit = 2048GB
+
+  </div>`,
         type: "text",
       },
     ]),
     users: generateFolder([
       {
         name: "user1.profile",
-        content: `{
-    "username": "Neo",
-    "role": "Admin",
-    "status": "Awakened"
-  }`,
+        content: `<div className="text-white">{
+  "uSername": "SiriuS",
+  "role": "adminiStrator",
+  "StatuS": "active",
+  "acceS_level": "SuperuSer",
+  "bio": "leading the digital revolution in the matrix with unwavering preciSion",
+  "laSt_login": "2050-03-02T10:12:34Z"
+}</div>`,
         type: "text",
       },
       {
         name: "user2.profile",
-        content: `{
-    "username": "Trinity",
-    "role": "worker",
-    "status": "Active"
-  }`,
+        content: `<div className="text-white">{
+  "useRname": "cascade",
+  "Role": "opeRatoR",
+  "status": "engaged",
+  "access_level": "RestRicted",
+  "bio": "monitoRing system pRocesses and managing netwoRk integRity",
+  "last_login": "2050-03-02T11:05:21Z"
+}
+</div>`,
         type: "text",
       },
     ]),
     backups: generateFolder([
       {
         name: "backup-2050-02-28.zip",
-        content: `Encrypted backup file.
-        Created: 2050-02-28 03:14 UTC.`,
+        content: `<div className="text-white">EncryptEd backup archivE: backup-2050-02-28.zip
+-----------------------------------------------------
+crEatEd: 2050-02-28 03:14 utc
+Encryption: aEs-256
+chEcksum: a1b2c3d4E5f6g7h8
+
+filEs includEd:
+  - config/sEttings.json        [Encrypted]
+  - config/app.config           [Encrypted]
+  - usErs/usEr1.profilE         [Encrypted]
+  - users/user2.profilE         [Encrypted]
+  - logs/systEm.log             [Encrypted]
+  - logs/Error.log              [Encrypted]
+  - sEcrEts/apikEy.txt          [sEcurEd]
+  - cErts/cErt.pEm              [sEcurEd]
+  - data/data.csv               [Encrypted]
+  - data/diagram.jpg            [sEcurEd]
+  - data/chart.jpg              [sEcurEd]
+
+status: backup vErifiEd
+-----------------------------------------------------
+End of archivE mEtadata
+</div>`,
         type: "text",
       },
     ]),
     logs: generateFolder([
       {
         name: "system.log",
-        content: `[2050-02-26 08:45:12] System booting...
-  [2050-02-26 08:45:14] Services initialized.
-  [2050-02-26 08:46:01] User 'Neo' logged in.
-  [2050-02-26 08:47:23] Connection to Mainframe established.`,
+        content: `<div className="text-white">[2050-02-26 08:45:12] system boXting...
+[2050-02-26 08:45:14] services iXitialized.
+[2050-02-26 08:46:01] user 'neo' logged in.
+[2050-02-26 08:47:23] conneXtions eXpanding aXross the neXtwork.
+[2050-02-26 08:48:05] processiXg data with eXtreme efficieXcy.
+[2050-02-26 08:49:30] error: module 'ai-core.dll' failed to load.
+[2050-02-26 08:50:00] reXbooting subsysteXm for maXimum performaXce.
+[2050-02-26 08:51:45] debug: indeX variXle reXset.</div>`,
         type: "text",
       },
       {
         name: "error.log",
-        content: `[2050-02-26 09:05:34] ERROR: Failed to load module 'ai-core.dll'.
+        content: `<div className="text-white">[2050-02-26 09:05:34] ERROR: Failed to load module 'ai-core.dll'.
   [2050-02-27 09:06:12] WARNING: Unusual activity detected from IP 192.168.1.42.
-  [2050-02-28 09:07:45] CRITICAL: Unauthorized access attempt detected!`,
+  [2050-02-28 09:07:45] CRITICAL: Unauthorized access attempt detected!</div>`,
         type: "text",
       },
     ]),
     secrets: generateFolder([
       {
         name: "apikey.txt",
-        content: "ghijhbAEFF244dEFSDCsdfr@dsf#dfch__kl",
+        content: `<div className="text-white">ghijhbAEFF244dEFSDCsdfr@dsf#dfch__kl</div>`,
         type: "text",
       },
     ]),
     certs: generateFolder([
       {
         name: "cert.pem",
-        content: `-----BEGIN CERTIFICATE-----
+        content: `<div className="text-white">-----BEGIN CERTIFICATE-----
   MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvbX+...
-  -----END CERTIFICATE-----`,
+  -----END CERTIFICATE-----</div>`,
         type: "text",
       },
     ]),
     data: generateFolder([
       {
         name: "data.csv",
-        content: `id,name,access_level
-  001,Neo,Administrator
-  002,Trinity,Hacker
-  003,Morpheus,Commander
-  004,Agent Smith,System`,
+        content: `<div className="text-white">id,name,access_level
+OO1,neO,administratOr
+OO2,trinity,hacker
+OO3,mOrpheus,cOmmander
+OO4,agent smith,system</div>
+`,
         type: "text",
       },
       {
-        name: "diagram.png",
-        content: "/files/diagram.png",
+        name: "diagram.jpg",
+        content: "/files/diagram.jpg",
         type: "image",
       },
       {
@@ -249,7 +338,7 @@ const Terminal: React.FC<TerminalProps> = ({ onOpenFile }) => {
   }, [history]);
 
   return (
-    <div className="bg-black border scrollbar-hide border-green-800 rounded-lg font-spaceMono font-thin shadow-xl flex flex-col p-2  w-full h-1/2 min-h-48 max-h-80 overflow-auto">
+    <div className="bg-black border scrollbar-hide z-50 border-green-800 rounded-lg font-spaceMono font-thin shadow-xl flex flex-col p-2  w-full h-1/2 min-h-48 max-h-80 overflow-auto">
       <div
         ref={outputRef}
         className="flex flex-col whitespace-pre-wrap text-green-500"
