@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import React, { useState, useRef, useEffect } from "react";
 
 interface TerminalLine {
@@ -174,16 +175,24 @@ End of archivE mEtadata
       },
       {
         name: "error.log",
-        content: `<div className="text-white">[2050-02-26 09:05:34] ERROR: Failed to load module 'ai-core.dll'.
-  [2050-02-27 09:06:12] WARNING: Unusual activity detected from IP 192.168.1.42.
-  [2050-02-28 09:07:45] CRITICAL: Unauthorized access attempt detected!</div>`,
+        content: `<div className="text-white">[2050-02-26 09:05:34] error: faIled to load module 'aI-core.dll'.
+  [2050-02-27 09:06:12] warnIng: unusual actIvIty detected from IP 192.168.1.42.
+  [2050-02-28 09:07:45] crItIcal: unauthorIzed access attempt detected!
+  IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII</div>`,
         type: "text",
       },
     ]),
     secrets: generateFolder([
       {
-        name: "apikey.txt",
-        content: `<div className="text-white">ghijhbAEFF244dEFSDCsdfr@dsf#dfch__kl</div>`,
+        name: "key.pwd",
+        content: `<div className="text-white">dawn drapes dim,
+dewdrops dance,
+distant drums,
+darkened depths
+dizzy drifts
+destiny's door
+diamond dust,
+divine dusk</div>`,
         type: "text",
       },
     ]),
@@ -191,7 +200,8 @@ End of archivE mEtadata
       {
         name: "cert.pem",
         content: `<div className="text-white">-----BEGIN CERTIFICATE-----
-  MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvbX+...
+TeTrisTeTrisTeTrisTeTrisTeTrisTeTrisTeTrisTeTrisTeTrisTeTrisTeTrisTeTris
+TeTrisTeTrisTeTrisTeTrisTeTrisTeTrisTeTrisTeTrisTeTrisTeTrisTeTrisTeTris
   -----END CERTIFICATE-----</div>`,
         type: "text",
       },
@@ -201,9 +211,9 @@ End of archivE mEtadata
         name: "data.csv",
         content: `<div className="text-white">id,name,access_level
 OO1,neO,administratOr
-OO2,trinity,hacker
+OO2,OsmOs,mOderatOr
 OO3,mOrpheus,cOmmander
-OO4,agent smith,system</div>
+OO4,agent,system</div>
 `,
         type: "text",
       },
@@ -222,11 +232,17 @@ OO4,agent smith,system</div>
 };
 
 const Terminal: React.FC<TerminalProps> = ({ onOpenFile }) => {
+
+
+  const router = useRouter();
+
   const [history, setHistory] = useState<TerminalLine[]>([]);
   const [command, setCommand] = useState("");
   const [currentPath, setCurrentPath] = useState<string[]>(["root"]);
   const inputRef = useRef<HTMLInputElement>(null);
   const outputRef = useRef<HTMLDivElement>(null);
+
+
 
   const getCurrentDirectory = (): Record<string, FileData> => {
     let dir: Record<string, FileData> | any = fileSystem;
@@ -237,12 +253,30 @@ const Terminal: React.FC<TerminalProps> = ({ onOpenFile }) => {
   };
 
   const handleCommand = (cmd: string) => {
+
+    
     let output = "";
     let isError = false;
     const args = cmd.trim().split(" ");
     const baseCmd = args[0];
 
-    if (baseCmd === "ls") {
+    if (baseCmd === "AMBIDEXTROUS") {
+      if (currentPath.length === 1 && currentPath[0] === "root") {
+      output = "Mission Accomplished! The keyword is AMBIDEXTROUS.";
+      isError = false;
+      setTimeout(() => {
+        router.push("/stg-4-tenet/stuttgart/finale");
+      }, 3500);
+
+      } else {
+      output = "you are not in the root directory.";
+      isError = true;
+      }
+    } else if (baseCmd === "clear") {
+      setHistory([]);
+      return;
+    }
+    else if (baseCmd === "ls") {
       const dir = getCurrentDirectory();
       const items = Object.keys(dir);
       // List items vertically:

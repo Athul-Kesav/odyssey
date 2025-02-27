@@ -10,6 +10,7 @@ const LinuxDesktopPage: React.FC = () => {
     Array<{ id: number; file: FileData }>
   >([]);
   const [tooltipVisible, setTooltipVisible] = useState(false);
+  const [objectiveVisible, setObjectiveVisible] = useState(false);
 
   const handleOpenFile = (file: FileData) => {
     setOpenWindows((prev) => [...prev, { id: Date.now(), file }]);
@@ -25,6 +26,13 @@ const LinuxDesktopPage: React.FC = () => {
       setTooltipVisible(false);
     }, 5000);
   };
+
+  function showObjective(){
+    setObjectiveVisible(true);
+    setTimeout(() => {
+      setObjectiveVisible(false);
+    }, 15000);
+  }
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -47,6 +55,31 @@ const LinuxDesktopPage: React.FC = () => {
           <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
           <path d="M12 17h.01" />
         </svg>
+      </div>
+
+      <div className="w-full origin-center h-10 top-1 justify-center  items-center flex absolute cursor-pointer hover:scale-110 transition-all active:scale-100 "
+      onClick={showObjective}>
+        <div className="mr-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.25"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className=""
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+            <path d="M12 17h.01" />
+          </svg>
+        </div>
+        <div>
+          <span className="font-neueMachina">OBJECTIVE</span>
+        </div>
       </div>
 
       {/* Tooltip with one-line hints for terminal commands */}
@@ -81,6 +114,19 @@ const LinuxDesktopPage: React.FC = () => {
               cat filename
             </span>{" "}
             - Display file content
+          </div>
+        </div>
+      )}
+
+      {/* Objective */}
+      {objectiveVisible && (
+        <div className="absolute top-20 w-full  origin-center pointer-events-none gap-2 flex flex-col p-4 bg-black/30 backdrop-blur-md text-green-400 font-spaceMono shadow-lg">
+          <div>
+            You are supposed to look for clues inside the files. Use the terminal to navigate through the directories and open the files.
+            <br/>
+            Figure out the pattern and find out the keyword to hack the computer.
+            <br/>
+            Finally, type the keyword on the terminal in the root directory to complete the mission.
           </div>
         </div>
       )}
