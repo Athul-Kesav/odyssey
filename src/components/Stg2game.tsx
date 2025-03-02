@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import ClickButton from "./ClickButton";
 import Image from "next/image";
@@ -15,7 +15,7 @@ const Game = () => {
     const [input, setInput] = useState("");
     const [feedback, setFeedback] = useState<string[]>(Array(8).fill(""));
 
-    const handleInput = (num: string) => {
+    /* const handleInput = (num: string) => {
         setInput((prev) => (prev.length < 8 ? prev + num : prev));
     };
 
@@ -26,7 +26,7 @@ const Game = () => {
     const handleClear = () => {
         setInput("");
         setFeedback(Array(8).fill(""));
-    };
+    }; */
 
     const checkGuess = () => {
         if (input.length < 8) return;
@@ -72,14 +72,32 @@ const Game = () => {
         }
     };
 
-    const numpad = useMemo(() => {
+    const generateRandomNumpad = () => {
         const numbers = [...Array(10).keys()];
         for (let i = numbers.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
         }
         return numbers;
-    }, []);
+    };
+
+    const [numpad, setNumpad] = useState(generateRandomNumpad());
+
+    const handleInput = (num: string) => {
+        setInput((prev) => (prev.length < 8 ? prev + num : prev));
+        setNumpad(generateRandomNumpad());
+    };
+
+    const handleBackspace = () => {
+        setInput((prev) => prev.slice(0, -1));
+        setNumpad(generateRandomNumpad());
+    };
+
+    const handleClear = () => {
+        setInput("");
+        setFeedback(Array(8).fill(""));
+        setNumpad(generateRandomNumpad());
+    };
 
     return (
         <motion.div

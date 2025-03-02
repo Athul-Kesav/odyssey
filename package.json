@@ -1,9 +1,9 @@
 {
   "name": "odyssey",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev & npx next-video sync -w",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

@@ -38,7 +38,7 @@ export default function Rescue() {
             He must save his friend <span className="font-bold text-yellow-400">ECHO</span> before the
             oxygen runs out. The space station is on a collision course, and
             only Adam can redirect it to Earth. But to do so, he must hack into
-            the system using a secret 6-digit pin to find a possible landing
+            the system using a secret 8-digit pin to find a possible landing
             station.
           </p>
           <p className="text-lg font-thin leading-relaxed text-white mt-4">

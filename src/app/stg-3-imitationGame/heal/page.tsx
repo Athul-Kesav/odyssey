@@ -57,7 +57,7 @@ export default function Page() {
             transition={{ duration: 1 }}
           >
             <p className="">
-              Adam's vision blurred as he stumbled through the wreckage of his
+              Adam&apos;s vision blurred as he stumbled through the wreckage of his
               crashed ship, his hands slick with blood. The world around him was
               unrecognizable—a vast, desolate stretch of land under a cold
               German sky. His body ached, his mind clouded, but then… a flicker
@@ -66,8 +66,8 @@ export default function Page() {
               <br />
             </p>
             <p className="font-light text-xl text-gray-100 italic">
-              ADM303: "Your location is compromised. You must move. Decipher the
-              coordinates. Find the basecamp. Or you won't make it."
+              ADM303: &ldquo;Your location is compromised. You must move. Decipher the
+              coordinates. Find the basecamp. Or you won&apos;t make it.&rdquo;
               <br />
               <br />
             </p>
@@ -79,20 +79,20 @@ export default function Page() {
               <br />
             </p>
             <p className="font-light text-xl text-gray-100 italic">
-              "Stay with me, Adam."
+              &ldquo;Stay with me, Adam.&rdquo;
               <br />
               <br />
             </p>
             <p className="">
-              The voice wasn't his own. It was the AI embedded in his
+              The voice wasn&apos;t his own. It was the AI embedded in his
               consciousness since birth—his shadow, his ghost, the only thing
               that had ever truly known him.
               <br />
               <br />
             </p>
             <p className="font-light text-xl text-gray-100 italic">
-              "I've run simulations. The encryption method is old, possibly
-              wartime. Focus."
+              &ldquo;I&apos;ve run simulations. The encryption method is old, possibly
+              wartime. Focus.&rdquo;
               <br />
               <br />
             </p>
@@ -102,14 +102,14 @@ export default function Page() {
               cities to the crash site. The coordinates are:
               <br />
               <span className="font-mono block mt-2">
-                50°6'39.3264"N, 8°40'55.6572"E
+                50°6&apos;39.3264&rdquo;N, 8°40&apos;55.6572&rdquo;E
               </span>
               <span className="font-mono block my-2">
-                48°46'59.9988"N, 9°10'59.9988"E
+                48°46&apos;59.9988&rdquo;N, 9°10&apos;59.9988&rdquo;E
               </span>
             </p>
             <p className="text-gray-200 italic">
-              "Adam, we have to move. Now."
+              &ldquo;Adam, we have to move. Now.&rdquo;
               <br />
             </p>
             <p className="text-gray-100 leading-none text-3xl uppercase font-bold my-7 font-neueMachina tracking-wider">

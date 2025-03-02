@@ -16,16 +16,20 @@ export type FileData = {
   type: "text" | "image";
 };
 
+interface Directory {
+  [key: string]: FileData | Directory;
+}
+
 // A custom generateFolder function that accepts an array of FileData objects.
-export const generateFolder = (files: FileData[]) => {
-  return files.reduce<Record<string, FileData>>((acc, file) => {
+export const generateFolder = (files: FileData[]): Directory => {
+  return files.reduce<Directory>((acc, file) => {
     acc[file.name] = file;
     return acc;
   }, {});
 };
 
 // Define your file system using custom folders and files.
-export const fileSystem = {
+export const fileSystem: Directory = {
   root: {
     config: generateFolder([
       {
@@ -231,30 +235,36 @@ OO4,agent,system</div>
   },
 };
 
+// Type guard to determine if an entry is a directory.
+function isDirectory(entry: FileData | Directory): entry is Directory {
+  return typeof entry === "object" && !("content" in entry);
+}
+
 const Terminal: React.FC<TerminalProps> = ({ onOpenFile }) => {
-
-
   const router = useRouter();
-
   const [history, setHistory] = useState<TerminalLine[]>([]);
   const [command, setCommand] = useState("");
   const [currentPath, setCurrentPath] = useState<string[]>(["root"]);
   const inputRef = useRef<HTMLInputElement>(null);
   const outputRef = useRef<HTMLDivElement>(null);
 
-
-
-  const getCurrentDirectory = (): Record<string, FileData> => {
-    let dir: Record<string, FileData> | any = fileSystem;
+  // getCurrentDirectory now returns a Directory.
+  const getCurrentDirectory = (): Directory => {
+    let current: FileData | Directory = fileSystem;
     for (const segment of currentPath) {
-      dir = dir[segment];
+      if (isDirectory(current) && segment in current) {
+        current = current[segment];
+      } else {
+        throw new Error(`Path segment "${segment}" is not a directory.`);
+      }
     }
-    return dir;
+    if (!isDirectory(current)) {
+      throw new Error("Current path does not point to a directory.");
+    }
+    return current;
   };
 
   const handleCommand = (cmd: string) => {
-
-    
     let output = "";
     let isError = false;
     const args = cmd.trim().split(" ");
@@ -262,24 +272,21 @@ const Terminal: React.FC<TerminalProps> = ({ onOpenFile }) => {
 
     if (baseCmd === "AMBIDEXTROUS") {
       if (currentPath.length === 1 && currentPath[0] === "root") {
-      output = "Mission Accomplished! The keyword is AMBIDEXTROUS.";
-      isError = false;
-      setTimeout(() => {
-        router.push("/stg-4-tenet/stuttgart/finale");
-      }, 3500);
-
+        output = "Mission Accomplished! The keyword is AMBIDEXTROUS.";
+        isError = false;
+        setTimeout(() => {
+          router.push("/stg-4-tenet/stuttgart/finale");
+        }, 3500);
       } else {
-      output = "you are not in the root directory.";
-      isError = true;
+        output = "you are not in the root directory.";
+        isError = true;
       }
     } else if (baseCmd === "clear") {
       setHistory([]);
       return;
-    }
-    else if (baseCmd === "ls") {
+    } else if (baseCmd === "ls") {
       const dir = getCurrentDirectory();
       const items = Object.keys(dir);
-      // List items vertically:
       output = items.join("\n");
     } else if (baseCmd === "cd") {
       if (args[1] === "..") {
@@ -293,7 +300,8 @@ const Terminal: React.FC<TerminalProps> = ({ onOpenFile }) => {
       } else {
         const dir = getCurrentDirectory();
         const target = args[1];
-        if (dir[target] && typeof dir[target] === "object") {
+        // Only allow changing directory if the target exists and is a directory.
+        if (dir[target] && isDirectory(dir[target])) {
           setCurrentPath((prev) => [...prev, target]);
           output = "";
         } else {
@@ -305,14 +313,14 @@ const Terminal: React.FC<TerminalProps> = ({ onOpenFile }) => {
       const fileName = args[1];
       const dir = getCurrentDirectory();
       const fileEntry = dir[fileName];
-      if (fileEntry && fileEntry.content) {
+      if (fileEntry && "content" in fileEntry) {
         const isImage =
           fileName.endsWith(".png") ||
           fileName.endsWith(".jpg") ||
           fileName.endsWith(".jpeg");
         const fileData: FileData = {
           name: fileName,
-          content: fileEntry.content,
+          content: typeof fileEntry.content === "string" ? fileEntry.content : "",
           type: isImage ? "image" : "text",
         };
         onOpenFile(fileData);
@@ -325,13 +333,18 @@ const Terminal: React.FC<TerminalProps> = ({ onOpenFile }) => {
       const fileName = args[1];
       const dir = getCurrentDirectory();
       const fileEntry = dir[fileName];
-      if (fileEntry && fileEntry.content) {
+      if (fileEntry && "content" in fileEntry) {
         if (
           fileName.endsWith(".txt") ||
           fileName.endsWith(".json") ||
           fileName.endsWith(".config")
         ) {
-          output = fileEntry.content;
+          if (typeof fileEntry.content === "string") {
+            output = fileEntry.content;
+          } else {
+            output = `Cannot display content of type: ${typeof fileEntry.content}`;
+            isError = true;
+          }
         } else {
           output = `Cannot cat binary file: ${fileName}`;
           isError = true;

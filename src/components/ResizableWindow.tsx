@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 
 interface ResizableWindowProps {
   title: string;
@@ -30,7 +30,6 @@ const ResizableWindow: React.FC<ResizableWindowProps> = ({
   const [isResizing, setIsResizing] = useState(false);
   const [resizeDir, setResizeDir] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
-
   // Used for both resizing and dragging:
   const [lastMousePos, setLastMousePos] = useState({ x: 0, y: 0 });
 
@@ -61,7 +60,7 @@ const ResizableWindow: React.FC<ResizableWindowProps> = ({
     e.stopPropagation();
   };
 
-  const handleMouseMove = (e: MouseEvent) => {
+  const handleMouseMove = useCallback((e: MouseEvent) => {
     // Handle dragging first
     if (isDragging) {
       const dx = e.clientX - dragStartPosRef.current.x;
@@ -125,9 +124,18 @@ const ResizableWindow: React.FC<ResizableWindowProps> = ({
     setDimensions({ width: newWidth, height: newHeight });
     setPosition({ x: newX, y: newY });
     setLastMousePos({ x: e.clientX, y: e.clientY });
-  };
+  }, [
+    isDragging,
+    isResizing,
+    resizeDir,
+    lastMousePos,
+    dimensions,
+    position,
+    minWidth,
+    minHeight,
+  ]);
 
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     if (isDragging) {
       setIsDragging(false);
     }
@@ -135,7 +143,7 @@ const ResizableWindow: React.FC<ResizableWindowProps> = ({
       setIsResizing(false);
       setResizeDir(null);
     }
-  };
+  }, [isDragging, isResizing]);
 
   useEffect(() => {
     window.addEventListener("mousemove", handleMouseMove);
@@ -144,7 +152,7 @@ const ResizableWindow: React.FC<ResizableWindowProps> = ({
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [isDragging, isResizing, resizeDir, lastMousePos, dimensions, position, handleMouseMove,]);
+  }, [handleMouseMove, handleMouseUp]);
 
   return (
     <div
@@ -176,7 +184,9 @@ const ResizableWindow: React.FC<ResizableWindowProps> = ({
         </div>
       </div>
       {/* Content Area */}
-      <div className="flex-grow p-4 text-green-500 font-spaceMono overflow-auto scrollbar-hide">{children}</div>
+      <div className="flex-grow p-4 text-green-500 font-spaceMono overflow-auto scrollbar-hide">
+        {children}
+      </div>
 
       {/* Resize Handles */}
       <div
