@@ -43,7 +43,7 @@ export default function Home() {
           </h1>
           <PaintReveal />
           <div className="absolute w-5/6 mt-20 h-full pointer-events-none">
-            <p className="text-black  pointer-events-none text-2xl font-extralight font-montserrat">
+            <p className="text-black  pointer-events-none text-xl font-extralight font-montserrat">
               You are <span className="font-normal">Adam</span>, a man trapped in a shifting digital prison — a Mind
               Trap — named <span className="font-medium">Veritas Nexus</span>, a labyrinth of illusions designed to fracture reality itself.
               Created by the <span className="font-medium">&ldquo;Der Schöpfer&rdquo;</span> (german for — The

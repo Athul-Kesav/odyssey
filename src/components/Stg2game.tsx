@@ -8,7 +8,7 @@ import Image from "next/image";
 import cross from "../../public/cross.svg";
 import bspace from "../../public/arrow-left-to-line.svg";
 
-const TARGET_NUMBER = "10121815";
+const TARGET_NUMBER = "28082004";
 
 const Game = () => {
     const router = useRouter();

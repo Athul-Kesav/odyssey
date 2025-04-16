@@ -99,7 +99,7 @@ function Escape() {
     const binaryString = binarySequence.join("");
     const oVal = parseInt(binaryString, 2).toString(8);
 
-    if (oVal === "457") {
+    if (oVal === "571") {
       turnGreen();
     } else {
       turnRed();
